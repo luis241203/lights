@@ -1,75 +1,48 @@
-from scipy import fft, arange
+from wavefile import WaveReader
 import numpy as np
-import matplotlib.pyplot as plt
-from scipy.io import wavfile
-import os
+from playsound import playsound
+import threading
+
+def volumenes ():
+    with WaveReader("secrets.wav") as r:
+        for datos in r.read_iter(size=512):
+            canal= datos[0]
+            volume=np.linalg.norm(canal)
+            vomune2=int(volume*10)
+            #print ('|'*vomune2)
+
+            if vomune2>=0 and vomune2<2:
+                print ('volumen 0-2')
+                
+            elif vomune2>2 and vomune2<4:
+                print ('volumen 2-4')
+                
+            elif vomune2>4 and vomune2<6:
+                print ('volumen 4-8')
+                
+            elif vomune2>6 and vomune2<8:
+                print ('volumen entre 6-8')
+
+            else:
+                print ('volumen de más de 10 ')
+    
+            
+
+def play ():
+    with WaveReader("secrets.wav") as r:
+        for datos in r.read_iter(size=512):
+            canal= datos[0]
+            volume=np.linalg.norm(canal)
+            vomune2=int(volume*10)
+            if vomune2>=7 and vomune2=<8:
+                playsound("secrets.wav")
+                break
+
+com1=threading.Thread(target=volumenes)
+com2=threading.Thread(target=play)
+
+com1.start()
+com2.start()
 
 
-def frequency_sepectrum(x, sf):
-    """
-    Derive frequency spectrum of a signal from time domain
-    :param x: signal in the time domain
-    :param sf: sampling frequency
-    :returns frequencies and their content distribution
-    """
-    x = x - np.average(x)  # zero-centering
 
-    n = len(x)
-    print(n)
-    k = arange(n)
-    tarr = n / float(sf)
-    frqarr = k / float(tarr)  # two sides frequency range
-
-    frqarr = frqarr[range(n // 2)]  # one side frequency range
-
-    x = fft(x) / n  # fft computing and normalization
-    x = x[range(n // 2)]
-
-    return frqarr, abs(x)
-
-
-# Sine sample with a frequency of 1hz and add some noise
-sr = 32  # sampling rate
-y = np.linspace(0, 2*np.pi, sr)
-y = np.tile(np.sin(y), 5)
-y += np.random.normal(0, 1, y.shape)
-t = np.arange(len(y)) / float(sr)
-
-plt.subplot(2, 1, 1)
-plt.plot(t, y)
-plt.xlabel('t')
-plt.ylabel('y')
-
-frq, X = frequency_sepectrum(y, sr)
-
-plt.subplot(2, 1, 2)
-plt.plot(frq, X, 'b')
-plt.xlabel('Freq (Hz)')
-plt.ylabel('|X(freq)|')
-plt.tight_layout()
-
-
-# wav sample from https://freewavesamples.com/files/Alesis-Sanctuary-QCard-Crickets.wav
-here_path = os.path.dirname(os.path.realpath(__file__))
-wav_file_name = 'Alesis-Sanctuary-QCard-Crickets.wav'
-wave_file_path = os.path.join(here_path, wav_file_name)
-sr, signal = wavfile.read("secrets.wav")
-
-#y = signal[:, 0]  # use the first channel (or take their average, alternatively)
-t = np.arange(len(signal)) / float(sr)
-
-plt.figure()
-plt.subplot(2, 1, 1)
-plt.plot(t, y)
-plt.xlabel('t')
-plt.ylabel('y')
-
-frq, X = frequency_sepectrum(y, sr)
-
-plt.subplot(2, 1, 2)
-plt.plot(frq, X, 'b')
-plt.xlabel('Freq (Hz)')
-plt.ylabel('|X(freq)|')
-plt.tight_layout()
-
-plt.show()
