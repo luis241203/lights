@@ -11,32 +11,42 @@ def volumenes ():
             vomune2=int(volume*10)
             #print ('|'*vomune2)
 
-            if vomune2>=0 and vomune2<2:
-                print ('volumen 0-2')
+            if vomune2>0 and vomune2<=2:
+                print ('si led 7')
+                continue
+            print ('no led 7')
                 
-            elif vomune2>2 and vomune2<4:
-                print ('volumen 2-4')
+            if vomune2>2 and vomune2<=4:
+                print ('si led 11')
+                continue
+            print ('no led 11')
                 
-            elif vomune2>4 and vomune2<6:
-                print ('volumen 4-8')
+            if vomune2>4 and vomune2<=6:
+                print ('si led 12')
+                continue
+            print ('no led 12')
                 
-            elif vomune2>6 and vomune2<8:
-                print ('volumen entre 6-8')
+            if vomune2>6 and vomune2<=8:
+                print ('si led 13')
+                continue
+            print ('no led 13')
 
-            else:
-                print ('volumen de más de 10 ')
+            if vomune2==0:
+                print('si led 14')
+                continue
+            print ('no led 14')
+
+            if vomune2>8:
+                print ('VOLUMEN EN '+str(vomune2))
+                continue
+            print ('volumen debajo de parametros')
+
+
     
             
 
 def play ():
-    with WaveReader("secrets.wav") as r:
-        for datos in r.read_iter(size=512):
-            canal= datos[0]
-            volume=np.linalg.norm(canal)
-            vomune2=int(volume*10)
-            if vomune2>=7 and vomune2=<8:
-                playsound("secrets.wav")
-                break
+    playsound("secrets.wav")
 
 com1=threading.Thread(target=volumenes)
 com2=threading.Thread(target=play)
