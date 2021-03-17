@@ -10,6 +10,10 @@ def volumenes ():
             volume=np.linalg.norm(canal)
             vomune2=int(volume*10)
             #print ('|'*vomune2)
+            if vomune2==0:
+                print('si led 14')
+                continue
+            print ('no led 14')
 
             if vomune2>0 and vomune2<=2:
                 print ('si led 7')
@@ -30,11 +34,6 @@ def volumenes ():
                 print ('si led 13')
                 continue
             print ('no led 13')
-
-            if vomune2==0:
-                print('si led 14')
-                continue
-            print ('no led 14')
 
             if vomune2>8:
                 print ('VOLUMEN EN '+str(vomune2))
