@@ -4,11 +4,16 @@ from playsound import playsound
 import threading
 
 def volumenes ():
-    with WaveReader("secrets.wav") as r:
+    with WaveReader("thunderstruck.wav") as r:
         for datos in r.read_iter(size=512):
             canal= datos[0]
             volume=np.linalg.norm(canal)
             vomune2=int(volume*10)
+            if vomune2>13:
+                vomune2=int(volume)
+            else:
+                vomune2=int(volume*10)
+            
             #print ('|'*vomune2)
             if vomune2==0:
                 print('si led 14')
@@ -45,7 +50,7 @@ def volumenes ():
             
 
 def play ():
-    playsound("secrets.wav")
+    playsound("thunderstruck.wav")
 
 com1=threading.Thread(target=volumenes)
 com2=threading.Thread(target=play)
